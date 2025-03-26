@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit" class="btn btn-primary">게시글 작성</button>
+    </form>
+{% endblock %}
