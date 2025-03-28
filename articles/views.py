@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import ArticleForm, CommentForm
-from .models import Article
+from .models import Article, Comment
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -39,6 +39,7 @@ def detail(request, id):
 
     return render(request, 'detail.html', context)
 
+@login_required
 def delete(request, id):
     article = Article.objects.get(id=id) 
     account = request.user
@@ -48,6 +49,7 @@ def delete(request, id):
     else:
         return redirect('articles:detail', article.id)
 
+@login_required
 def update(request, id):
     article = Article.objects.get(id=id) 
     account = request.user
@@ -88,3 +90,11 @@ def comment_create(request, article_id):
         comment.save()
 
         return redirect('articles:detail', id=article_id)
+
+@login_required
+def comment_delete(request, article_id, comment_id):
+    comment = Comment.objects.get(id=comment_id)
+    if request.user == comment.user:
+        comment.delete()
+    
+    return redirect('articles:detail', id=article_id)

@@ -11,15 +11,20 @@
     <form action="{% url 'articles:comment_create' article.id %}" method="POST">
         {% csrf_token %}
         {{form}}
-        <button type="submit" class="btn btn-secondary">댓글 달기</button>
+        <button type="submit" class="btn btn-success">댓글 달기</button>
     </form>
     <hr>
     {% for comment in article.comment_set.all %}
         <li>{{comment.user.username}} - {{comment.content}}</li>
+        {% if user == comment.user %}
+            <a href="{% url 'articles:comment_delete' article.id comment.id %}">댓글 삭제</a>
+        {% endif %}
     {% endfor %}
     <hr>
     <a href="{% url 'articles:index'%}" type="botton" class="btn btn-primary">게시판으로</a>
-    <a href="{% url 'articles:update' article.id %}" type="botton" class="btn btn-warning">수정</a>
-    <a href="{% url 'articles:delete' article.id %}" type="botton" class="btn btn-danger">삭제</a>
-    
+    {% if user == article.user %}
+        <a href="{% url 'articles:update' article.id %}" type="botton" class="btn btn-warning">게시글 수정</a>
+        <a href="{% url 'articles:delete' article.id %}" type="botton" class="btn btn-danger">게시글 삭제</a>
+    {% endif %}
+
 {% endblock %}
