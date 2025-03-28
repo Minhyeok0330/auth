@@ -4,12 +4,18 @@
     <br>
     <h3>제목:{{article.title}}</h3>
     <hr>
-    <p>내용</p>
-    <br>
     <p>{{article.content}}</p>
+    <br>
+    <p>작성자:{{article.user}}</p>
+    <hr>
+    <form action="{% url 'articles:comment_create' article.id %}" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit">
+    </form>
+    <hr>
     <a href="{% url 'articles:index'%}" type="botton" class="btn btn-primary">게시판으로</a>
     <a href="{% url 'articles:update' article.id %}" type="botton" class="btn btn-warning">수정</a>
     <a href="{% url 'articles:delete' article.id %}" type="botton" class="btn btn-danger">삭제</a>
     
-<hr>
 {% endblock %}
