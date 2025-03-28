@@ -5,14 +5,6 @@ from accounts.models import User
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-def index(request):
-    articles = Article.objects.all()
-    context = {
-        'articles': articles,
-    }
-
-    return render(request, 'index.html', context)
-
 @login_required
 def create(request):
     if request.method=='POST':
@@ -29,6 +21,14 @@ def create(request):
         }
     return render(request, 'create.html', context)
 
+def index(request):
+    articles = Article.objects.all()
+    context = {
+        'articles': articles,
+    }
+
+    return render(request, 'index.html', context)
+
 def detail(request, id):
     article = Article.objects.get(id=id)
     form = CommentForm()
@@ -42,32 +42,30 @@ def detail(request, id):
 @login_required
 def delete(request, id):
     article = Article.objects.get(id=id) 
-    account = request.user
-    if article.user_id == account.id:
+
+    if article.user == request.user:
         article.delete()
+
         return redirect('articles:index')
+
     else:
         return redirect('articles:detail', article.id)
 
 @login_required
 def update(request, id):
     article = Article.objects.get(id=id) 
-    account = request.user
     
     if request.method == 'POST':
         form = ArticleForm(request.POST, instance=article)
-        if article.user_id == account.id:
+        if article.user == request.user:
             if form.is_valid():
                 form.save()
-                return redirect('articles:detail', article.id)
 
-        else:
-            return redirect('articles:detail', article.id)
+        return redirect('articles:detail', article.id)
     else:
         form = ArticleForm(instance=article)
         context = {
             'form':form,
-            'article' : article,
         }
         return render(request, 'update.html', context)
         
