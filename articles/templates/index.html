@@ -8,6 +8,12 @@
     <h3>{{article.title}}</h3>
     <p>{{article.content}}</p>
     <p>{{article.user}}</p>
+    <a href="{% url 'articles:detail' article.id %}" type="botton" class="btn btn-primary">게시글로</a>
+    <a href="{% url 'articles:detail' article.id %}" type="botton" class="btn btn-warning">수정</a>
+    <a href="{% url 'articles:detail' article.id %}" type="botton" class="btn btn-danger">삭제</a>
+
+
+
     <hr>
     {% endfor %}
 

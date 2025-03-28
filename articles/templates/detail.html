@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}   
+    <br>
+    <h3>제목:{{article.title}}</h3>
+    <hr>
+    <p>내용</p>
+    <br>
+    <p>{{article.content}}</p>
+    <a href="{% url 'articles:index'%}" type="botton" class="btn btn-primary">게시판으로</a>
+    <a href="{% url 'articles:update' article.id %}" type="botton" class="btn btn-warning">수정</a>
+    <a href="{% url 'articles:delete' article.id %}" type="botton" class="btn btn-danger">삭제</a>
+    
+<hr>
+{% endblock %}
